@@ -1,24 +1,10 @@
-# ava_components
+# AVA Vue Components
 
-## Project setup
-```
-yarn install
-```
+This project is composed of many directories which are individual node modules. Each of these modules is very small to 
+have their own git repo so they are bundled in this collective repo.
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+## qr_reader
+A button that toggles the webcam to scan qr codes from the browser.
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## qr_input
+A text input field coupled with qr_reader.
