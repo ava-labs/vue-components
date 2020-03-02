@@ -8,7 +8,7 @@
 
         <hr>
 
-        <bignum_input :denomination="9"></bignum_input>
+        <bignum_input :denomination="9" :max="big_max"></bignum_input>
     </div>
 </template>
 <script>
@@ -16,14 +16,21 @@
     import qr_reader from "./qr_reader";
     import bignum_input from "./bignum_input";
 
+    import * as BN from 'bn.js';
+
     export default {
+        data(){
+            return {
+                big_max: null,
+            }
+        },
         components: {
             qr_input,
             qr_reader,
             bignum_input
         },
-        mounted(){
-
+        created(){
+            this.big_max = new BN('10000000000');
         }
     }
 </script>
