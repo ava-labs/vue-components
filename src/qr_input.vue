@@ -12,7 +12,6 @@
     import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
     import { faCamera } from '@fortawesome/free-solid-svg-icons'
 
-    console.log(QRReader);
     export default {
         components: {
             QRReader,
