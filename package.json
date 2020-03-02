@@ -12,6 +12,8 @@
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "@fortawesome/vue-fontawesome": "^0.1.9",
     "@zxing/library": "^0.15.2",
+    "big.js": "^5.2.2",
+    "bn.js": "^5.1.1",
     "core-js": "^3.6.4",
     "vue": "^2.6.11"
   },
