@@ -41,5 +41,16 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "description": "A collection of Vue based components to be used across AVA frontend applications.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ava-labs/vue_components.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ava-labs/vue_components/issues"
+  },
+  "homepage": "https://github.com/ava-labs/vue_components#readme"
 }
