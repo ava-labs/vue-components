@@ -4,7 +4,7 @@
   "main": "dist/index.common.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name index ./src/main.js --mode production",
+    "build": "vue-cli-service build --target lib --name index ./src/wrapper.js --mode production",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
