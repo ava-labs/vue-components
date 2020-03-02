@@ -1,8 +1,5 @@
-import Vue from 'vue'
-import App from './App.vue'
+import QrReader from './qr_reader';
+import QrInput from './qr_input';
 
-Vue.config.productionTip = false
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+export {QrInput, QrReader};
