@@ -46,7 +46,7 @@
                 default: 0
             },
             max: {
-                type: BN,
+                type: [BN, Object],
             },
             min: {
                 type: Number,

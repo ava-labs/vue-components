@@ -21,7 +21,6 @@
     export default {
         data(){
             return {
-                big_max: null,
             }
         },
         components: {
@@ -29,8 +28,13 @@
             qr_reader,
             bignum_input
         },
+        computed: {
+            big_max(){
+                // return null;
+                return new BN('10000000000');
+            }
+        },
         created(){
-            this.big_max = new BN('10000000000');
         }
     }
 </script>
