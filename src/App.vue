@@ -9,12 +9,19 @@
         <hr>
 
         <bignum_input :denomination="9" :max="big_max"></bignum_input>
+
+        <hr>
+
+        <copy-text value="Copy this value">
+            COPY ME
+        </copy-text>
     </div>
 </template>
 <script>
     import qr_input from "./qr_input";
     import qr_reader from "./qr_reader";
     import bignum_input from "./bignum_input";
+    import CopyText from "./CopyText";
 
     import * as BN from 'bn.js';
 
@@ -26,7 +33,8 @@
         components: {
             qr_input,
             qr_reader,
-            bignum_input
+            bignum_input,
+            CopyText
         },
         computed: {
             big_max(){
