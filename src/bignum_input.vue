@@ -1,7 +1,7 @@
 <template>
     <input type="text" v-model="raw"
            @keydown.up="up" @keydown.down="down" contenteditable="false"
-           @input="input" @change="change">
+           @input="input" @change="change" placeholder="0.00">
 </template>
 <script>
     import Big from 'big.js';
@@ -10,7 +10,7 @@
     export default {
         data(){
             return {
-                raw: '0',
+                raw: '',
                 value: null,
             }
         },
@@ -19,7 +19,11 @@
         },
         computed: {
             stepSize(){
-                return Math.pow(10,-this.denomination);
+                if(this.step){
+                    return Math.pow(10,-this.denomination)*this.step;
+                }else{
+                    return Math.pow(10,-this.denomination);
+                }
             },
             bigMax(){
                 if(this.max){
@@ -51,6 +55,10 @@
             min: {
                 type: Number,
                 default: 0,
+            },
+            step: {
+                type: Number,
+                default: null,
             }
         },
         watch: {
@@ -85,13 +93,20 @@
             cleanInput(){
                 let rawnum;
                 // console.log('Raw:',this.raw);
+
+
                 try{
-                    if(this.raw === '') this.raw = 0;
-                    rawnum = new Big(this.raw);
+                    if(this.raw === ''){
+                        rawnum = new Big(0);
+                    }else{
+                        rawnum = new Big(this.raw);
+                    }
                 }catch(err){
                     rawnum = this.value;
                 }
 
+                console.log(rawnum);
+                // Min Max value limiting
                 if(this.bigMax != null){
                     if(rawnum.gt(this.bigMax)){
                         rawnum = this.bigMax
@@ -100,7 +115,15 @@
                     }
                 }
                 this.value = rawnum;
-                this.raw = rawnum.toFixed(this.denomination);
+                // this.raw = rawnum.toFixed(this.denomination);
+
+                // Denomination limiting
+
+                let trimmed = this.value.toFixed(this.denomination);
+                if(this.raw.length > trimmed.length){
+                    this.raw = trimmed;
+                }
+
                 this.emit();
             },
             maxout(){
@@ -134,3 +157,8 @@
         }
     }
 </script>
+<style scoped>
+    input{
+        text-align: right;
+    }
+</style>

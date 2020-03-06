@@ -8,7 +8,12 @@
 
         <hr>
 
-        <bignum_input :denomination="9" :max="big_max"></bignum_input>
+        <bignum_input :denomination="9" :max="big_max" :min="0" @change="bigInChange" :step="5"></bignum_input>
+        <p v-if="big_in_out">Out: {{big_in_out.toString()}}</p>
+        <div style="display: flex">
+            <p>Denomination 9</p>
+            <p>MAX: {{big_max.toString()}}</p>
+        </div>
 
         <hr>
 
@@ -28,6 +33,7 @@
     export default {
         data(){
             return {
+                big_in_out: null,
             }
         },
         components: {
@@ -39,7 +45,12 @@
         computed: {
             big_max(){
                 // return null;
-                return new BN('10000000000');
+                return new BN('1000000000000');
+            }
+        },
+        methods: {
+            bigInChange(val){
+                this.big_in_out = val;
             }
         },
         created(){
@@ -47,6 +58,9 @@
     }
 </script>
 
-<style lang="scss">
-
+<style scoped>
+    p{
+        margin: 4px 14px;
+        font-size: 13px;
+    }
 </style>
