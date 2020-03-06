@@ -63,7 +63,7 @@
                 default: 0,
             },
             step: {
-                type: BN,
+                type: [BN, Object],
                 default: null,
             }
         },
