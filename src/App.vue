@@ -8,7 +8,7 @@
 
         <hr>
 
-        <bignum_input :denomination="9" :max="big_max" :min="0" @change="bigInChange" :step="5"></bignum_input>
+        <bignum_input :denomination="9" :max="big_max" :min="0" @change="bigInChange" :step="stepSize"></bignum_input>
         <p v-if="big_in_out">Out: {{big_in_out.toString()}}</p>
         <div style="display: flex">
             <p>Denomination 9</p>
@@ -46,6 +46,12 @@
             big_max(){
                 // return null;
                 return new BN('1000000000000');
+            },
+            stepSize(){
+                let expo = 9-3;
+                    expo = new BN(expo)
+                let tens = new BN('10').pow(expo);
+                return new BN(1).mul(tens)
             }
         },
         methods: {

@@ -18,9 +18,15 @@
             this.value = new Big(0);
         },
         computed: {
+            // Should return Big
+            // this.step is BN
             stepSize(){
                 if(this.step){
-                    return Math.pow(10,-this.denomination)*this.step;
+                    let tens = Big(10).pow(-this.denomination);
+                    let bigStep = Big(this.step.toString());
+                    let res = tens.times(bigStep);
+                    // console.log(res.toString());
+                    return res
                 }else{
                     return Math.pow(10,-this.denomination);
                 }
@@ -57,7 +63,7 @@
                 default: 0,
             },
             step: {
-                type: Number,
+                type: BN,
                 default: null,
             }
         },
@@ -105,7 +111,6 @@
                     rawnum = this.value;
                 }
 
-                console.log(rawnum);
                 // Min Max value limiting
                 if(this.bigMax != null){
                     if(rawnum.gt(this.bigMax)){
@@ -114,7 +119,6 @@
                         rawnum = this.bigMin;
                     }
                 }
-                this.value = rawnum;
                 // this.raw = rawnum.toFixed(this.denomination);
 
                 // Denomination limiting
@@ -122,8 +126,11 @@
                 let trimmed = this.value.toFixed(this.denomination);
                 if(this.raw.length > trimmed.length){
                     this.raw = trimmed;
+                    rawnum = Big(trimmed);
                 }
 
+                // console.log(rawnum.toString());
+                this.value = rawnum;
                 this.emit();
             },
             maxout(){
@@ -147,7 +154,8 @@
                         this.value = val;
                     }
                 }
-                this.raw = val.toFixed(this.denomination);
+                // this.raw = val.toFixed(this.denomination);
+                this.raw = val.toPrecision();
                 this.emit();
             },
             down(){
