@@ -6,9 +6,10 @@
         </div>
         <div class="qr_popup" v-show="isActive">
             <div class="progress">
-                <font-awesome-icon class="loading" :icon="fa_spinner"></font-awesome-icon>
+                <font-awesome-icon class="loading" :icon="fa_spinner" @click="switchCamera"></font-awesome-icon>
                 <p>Waiting for a QR Code</p>
             </div>
+            <button class="switch" v-if="devices.length > 1">SWITCH</button>
             <button @click="stop"><font-awesome-icon :icon="fa_times"></font-awesome-icon></button>
             <video ref="preview"></video>
         </div>
@@ -31,19 +32,21 @@
                 isActive: false,
                 fa_spinner: faSpinner,
                 fa_times: faTimes,
+                devices: [],
+                deviceNow: null,
             }
         },
         methods: {
             start(){
-                let camera = this.camera;
-                if(!camera){
+                let deviceId = this.deviceNow;
+                if(!deviceId){
                     alert("No Cameras Found");
                     return;
                 }
 
                 this.isActive = true;
                 this.scanner
-                    .decodeFromInputVideoDevice(this.camera.deviceId, this.$refs.preview)
+                    .decodeFromInputVideoDevice(this.deviceNow, this.$refs.preview)
                     .then(this.onscan)
             },
             onscan(result){
@@ -55,6 +58,10 @@
                     this.scanner.reset();
                 }
                 this.isActive = false;
+            },
+            switchCamera(){
+                this.stop();
+
             }
         },
         mounted(){
@@ -66,7 +73,11 @@
                 .then(videoInputDevices => {
                     if(videoInputDevices.length > 0){
                         let camera = videoInputDevices[0];
-                        parent.camera = camera;
+                        // parent.camera = camera;
+                        alert(`Devices ${videoInputDevices}`);
+
+                        parent.deviceNow = camera.deviceId;
+                        parent.devices = videoInputDevices;
                     }else{
                         // console.error('No Cameras Found');
                     }
@@ -176,6 +187,13 @@
     }
     .v-progress-circular{
 
+    }
+
+    .switch{
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        color: #fff;
     }
 
     @keyframes spin {

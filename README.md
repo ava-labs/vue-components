@@ -1,10 +1,20 @@
 # AVA Vue Components
 
-This project is composed of many directories which are individual node modules. Each of these modules is very small to 
-have their own git repo so they are bundled in this collective repo.
+This is a collective npm module that has useful vue components to use in AVA frontend projects.
 
-## qr_reader
+
+
+## The Components
+### `qr_reader`
 A button that toggles the webcam to scan qr codes from the browser.
 
-## qr_input
+### `qr_input`
 A text input field coupled with qr_reader.
+
+### `bignum_input`
+Designed to work like an `<input>` tag. Displays numbers with decimal places and has helper functions.
+
+### `CopyText`
+An easy way to copy text to clipboard.
+
+
