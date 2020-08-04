@@ -3,7 +3,7 @@
         <QRReader class="readerIn" @change="change"><button>
             <fa :icon="fa_camera"></fa>
         </button></QRReader>
-        <input type="text" class="pk_in" placeholder="00000AVA00000"
+        <input type="text" class="pk_in" :placeholder="placeholder"
                v-model="pk" @input="oninput">
     </div>
 </template>
@@ -24,6 +24,7 @@
             }
         },
         props: {
+            placeholder: String,
             value: String
         },
         watch: {

@@ -4,7 +4,7 @@
 
         <hr>
 
-        <qr_input></qr_input>
+        <qr_input placeholder="Address"></qr_input>
 
         <hr>
 
