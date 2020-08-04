@@ -1,7 +1,7 @@
 <template>
     <input type="text" v-model="raw"
            @keydown.up="up" @keydown.down="down" contenteditable="false"
-           @input="input" @change="change" placeholder="0.00">
+           @input="input" @change="change" :placeholder="placeholder">
 </template>
 <script>
     import Big from 'big.js';
@@ -65,7 +65,8 @@
             step: {
                 type: [BN, Object],
                 default: null,
-            }
+            },
+            placeholder: String,
         },
         watch: {
             denomination(){

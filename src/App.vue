@@ -8,11 +8,12 @@
 
         <hr>
 
-        <bignum_input :denomination="9" :max="big_max" :min="0" @change="bigInChange" :step="stepSize"></bignum_input>
+        <bignum_input :denomination="9" :max="big_max" :min="0" @change="bigInChange" :step="stepSize" placeholder="0.0000000"></bignum_input>
         <p v-if="big_in_out">Out: {{big_in_out.toString()}}</p>
         <div style="display: flex">
             <p>Denomination 9</p>
             <p>MAX: {{big_max.toString()}}</p>
+            <p>Step: {{stepSize}}</p>
         </div>
 
         <hr>
