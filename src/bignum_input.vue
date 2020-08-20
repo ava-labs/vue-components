@@ -126,7 +126,7 @@
 
                 let trimmed = this.value.toFixed(this.denomination);
                 if(this.raw.length > trimmed.length){
-                    this.raw = trimmed;
+                    this.raw = trimmed.toLocaleString(this.denomination);
                     rawnum = Big(trimmed);
                 }
 
@@ -156,7 +156,7 @@
                     }
                 }
                 // this.raw = val.toFixed(this.denomination);
-                this.raw = val.toPrecision();
+                this.raw = val.toLocaleString(this.denomination);
                 this.emit();
             },
             down(){

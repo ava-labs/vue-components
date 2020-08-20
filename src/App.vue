@@ -49,10 +49,10 @@
                 return new BN('1000000000000');
             },
             stepSize(){
-                let expo = 9-3;
-                    expo = new BN(expo)
-                let tens = new BN('10').pow(expo);
-                return new BN(1).mul(tens)
+                // let expo = 9-3;
+                //     expo = new BN(expo)
+                // let tens = new BN('10').pow(expo);
+                return new BN(1);
             }
         },
         methods: {
