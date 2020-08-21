@@ -1,54 +1,44 @@
 <template>
-    <input type="text" v-model="raw"
-           @keydown.up="up" @keydown.down="down" contenteditable="false"
-           @input="input" @change="change" :placeholder="placeholder">
+    <CurrencyInput :allow-negative="false"
+                    v-model="val"
+                    locale="default"
+                    :currency="null"
+                    :value-as-integer="false"
+                    :precision="denomination"
+                    :auto-decimal-mode="true"
+                    :value-range="range"
+                   ref="curIn"
+                   @keydown.up.native="keyUp"
+                   @keydown.down.native="keyDown"
+    ></CurrencyInput>
 </template>
 <script>
     import Big from 'big.js';
     import * as BN from 'bn.js';
+    import {CurrencyInput} from 'vue-currency-input';
 
     export default {
+        components:{
+            CurrencyInput
+        },
         data(){
             return {
-                raw: '',
-                value: null,
+                val: 0,
             }
         },
-        created() {
-            this.value = new Big(0);
-        },
         computed: {
-            // Should return Big
-            // this.step is BN
-            stepSize(){
-                if(this.step){
-                    let tens = Big(10).pow(-this.denomination);
-                    let bigStep = Big(this.step.toString());
-                    let res = tens.times(bigStep);
-                    // console.log(res.toString());
-                    return res
-                }else{
-                    return Math.pow(10,-this.denomination);
-                }
-            },
-            bigMax(){
+            range(){
+                let maxStr = Number.MAX_SAFE_INTEGER.toString();
                 if(this.max){
-                    // this.max is a BN in satoshis
-                    let satoshi = Big(this.max);
-                    let divider = Big(10).pow(this.denomination);
-                    return satoshi.div(divider)
+                    let bnStr = this.max.toString();
+                    let big = Big(bnStr).div(Math.pow(10,this.denomination));
+                    maxStr = big.toString();
                 }
-                return null;
-            },
-            bigMin(){
-                if(typeof this.min != 'undefined'){
-                    return Big(this.min);
+                return{
+                    min: this.min.toString(),
+                    max: maxStr
                 }
-                return null;
-            },
-        },
-        mounted() {
-            this.cleanInput();
+            }
         },
         props: {
             denomination:{
@@ -67,101 +57,38 @@
                 default: null,
             },
             placeholder: String,
+            value: BN
+        },
+        model: {
+            prop: 'value',
+            event: 'change'
         },
         watch: {
-            denomination(){
-                this.cleanInput();
+            val(val){
+                let mult = Math.pow(10,this.denomination);
+                let valBig = Big(val).times(mult);
+                let strVal = valBig.toString();
+                let bnVal = new BN(strVal);
+                this.$emit('change', bnVal);
             }
         },
         methods: {
-
-            // Emit in BN as satoshis!
-            emit(){
-                // console.log(this.value.toString());
-                let tens = Big(10).pow(this.denomination);
-                let satoshis = this.value.times(tens);
-                let bn = new BN(satoshis.toFixed(0));
-                this.$emit('change', bn);
-            },
-            change(){
-                this.cleanInput();
-            },
-            input(ev){
+            keyUp(ev){
                 ev.preventDefault();
-                let data = ev.data;
-
-                if(data !== null){
-                    let num = parseInt(data);
-                    if(isNaN(num)){
-                        this.cleanInput();
-                    }
-                }
+                let dif = Big(1).div(Math.pow(10,this.denomination))
+                let newVal = Big(this.val).add(dif);
+                this.$refs.curIn.setValue(newVal.toString());
             },
-            cleanInput(){
-                let rawnum;
-                // console.log('Raw:',this.raw);
-
-
-                try{
-                    if(this.raw === ''){
-                        rawnum = new Big(0);
-                    }else{
-                        rawnum = new Big(this.raw);
-                    }
-                }catch(err){
-                    rawnum = this.value;
-                }
-
-                // Min Max value limiting
-                if(this.bigMax != null){
-                    if(rawnum.gt(this.bigMax)){
-                        rawnum = this.bigMax
-                    }else if(rawnum.lt(this.bigMin)){
-                        rawnum = this.bigMin;
-                    }
-                }
-                // this.raw = rawnum.toFixed(this.denomination);
-
-                // Denomination limiting
-
-                let trimmed = this.value.toFixed(this.denomination);
-                if(this.raw.length > trimmed.length){
-                    this.raw = trimmed.toLocaleString(this.denomination);
-                    rawnum = Big(trimmed);
-                }
-
-                // console.log(rawnum.toString());
-                this.value = rawnum;
-                this.emit();
+            keyDown(ev){
+                ev.preventDefault();
+                let dif = Big(1).div(Math.pow(10,this.denomination))
+                let newVal = Big(this.val).sub(dif);
+                this.$refs.curIn.setValue(newVal.toString());
             },
             maxout(){
-                if(this.bigMax){
-                    this.value = this.bigMax;
-                    this.valueToRaw();
+                if(this.max){
+                    this.$refs.curIn.setValue(this.max.toString());
                 }
-            },
-            up(){
-                this.value = this.value.plus(this.stepSize);
-                this.valueToRaw();
-            },
-            valueToRaw(){
-                let val = this.value;
-                if(this.bigMax != null){
-                    if(val.gt(this.bigMax)){
-                        val = this.bigMax;
-                        this.value = val;
-                    }else if(val.lt(this.bigMin)){
-                        val = this.bigMin;
-                        this.value = val;
-                    }
-                }
-                // this.raw = val.toFixed(this.denomination);
-                this.raw = val.toLocaleString(this.denomination);
-                this.emit();
-            },
-            down(){
-                this.value = this.value.minus(this.stepSize);
-                this.valueToRaw();
             }
         }
     }

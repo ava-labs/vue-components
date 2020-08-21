@@ -8,7 +8,7 @@
 
         <hr>
 
-        <bignum_input :denomination="9" :max="big_max" :min="0" @change="bigInChange" :step="stepSize" placeholder="0.0000000"></bignum_input>
+        <bignum_input :value="bigVal" :denomination="9" :max="big_max" :min="0" @change="bigInChange" :step="stepSize" placeholder="0.0000000"></bignum_input>
         <p v-if="big_in_out">Out: {{big_in_out.toString()}}</p>
         <div style="display: flex">
             <p>Denomination 9</p>
@@ -34,6 +34,7 @@
     export default {
         data(){
             return {
+                bigVal: new BN(0),
                 big_in_out: null,
             }
         },
@@ -46,7 +47,7 @@
         computed: {
             big_max(){
                 // return null;
-                return new BN('1000000000000');
+                return new BN('1000000000000000');
             },
             stepSize(){
                 // let expo = 9-3;

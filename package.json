@@ -1,7 +1,7 @@
 {
   "name": "@avalabs/vue_components",
   "version": "0.6.1",
-  "main": "dist/index.common.js",
+  "main": "dist/index.umd.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name index ./src/wrapper.js --mode production",
@@ -15,7 +15,8 @@
     "big.js": "^5.2.2",
     "bn.js": "^5.1.1",
     "core-js": "^3.6.4",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-currency-input": "^1.21.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.2.0",

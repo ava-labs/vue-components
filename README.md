@@ -8,3 +8,8 @@ A button that toggles the webcam to scan qr codes from the browser.
 
 ## qr_input
 A text input field coupled with qr_reader.
+
+
+## Publishing
+1) Build the library wit h`yarn build`
+2) Publish using `np`

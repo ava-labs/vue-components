@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
 import Big from "big.js";
+// import VueCurrencyInput from 'vue-currency-input';
+//
+//
+//
+// Vue.use(VueCurrencyInput)
 
 Vue.config.productionTip = false;
 
