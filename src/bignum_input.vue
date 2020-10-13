@@ -89,6 +89,9 @@
                 if(this.max){
                     this.$refs.curIn.setValue(this.max.toString());
                 }
+            },
+            clear(){
+                this.$refs.curIn.setValue('0');
             }
         }
     }
