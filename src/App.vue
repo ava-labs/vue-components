@@ -9,11 +9,8 @@
         <hr>
 
         <bignum_input :value="bigVal"
-                      :denomination="18"
-                      :max="big_max"
-                      :min="0"
+                      :denomination="1"
                       @change="bigInChange"
-                      :step="stepSize"
                       placeholder="Amount"
                       ref="big_in"
         ></bignum_input>

@@ -22,7 +22,13 @@
                 }
             },
             stepNum(){
-                if(!this.step) return 0.01
+                if(!this.step) {
+                    if(this.denomination >= 2){
+                        return 0.01
+                    }else{
+                        return Math.pow(10, -this.denomination)
+                    }
+                }
                 try{
                     return this.bnToNum(this.step)
                 }catch (e){
@@ -66,7 +72,7 @@
                     if(denomVal){
                         if(denomVal.length > this.denomination){
                             let newDenom = denomVal.substring(0,this.denomination)
-                            this.val = parseFloat(`${wholeVal}.${newDenom}`)
+                            this.val = `${wholeVal}.${newDenom}`
                             return
                         }
                     }
@@ -78,19 +84,23 @@
                     this.$emit('change', new BN(0));
                     return
                 }
-                let valEdit = (parseFloat(val).toFixed(this.denomination)).split('.').join('')
-                let valBn = new BN(valEdit)
+
+                let valBn = this.stringToBN(val)
                 this.$emit('change', valBn);
             },
             value(valBn){
-                // this.val = this.bnToNum(valBn)
-                console.log("Parent Change",valBn.toString())
+                this.val = this.bnToNum(valBn)
             }
         },
         methods: {
             bnToNum(bnVal){
                 let pow = (new Big(bnVal.toString())).div(Math.pow(10,this.denomination))
                 return pow.toNumber()
+            },
+            stringToBN(strVal){
+                let tens = Big(10).pow(this.denomination)
+                let satoshis = Big(strVal).times(tens)
+                return new BN(satoshis.toString())
             },
             maxout(){
                 if(this.maxNum){
