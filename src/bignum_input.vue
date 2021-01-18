@@ -12,23 +12,10 @@
             }
         },
         computed: {
-            range(){
-                let maxStr = Number.MAX_SAFE_INTEGER.toString();
-                if(this.max){
-                    let bnStr = this.max.toString();
-                    let big = Big(bnStr).div(Math.pow(10,this.denomination));
-                    maxStr = big.toString();
-                }
-                return{
-                    min: this.min.toString(),
-                    max: maxStr
-                }
-            },
             maxNum(){
-                if(!this.step) return null
+                if(!this.max) return null
                 try{
-                    let pow = (new Big(this.max.toString())).div(Math.pow(10,this.denomination))
-                    return pow.toNumber()
+                    return this.bnToNum(this.max)
                 }catch (e){
                     console.error(e)
                     return null
@@ -37,8 +24,7 @@
             stepNum(){
                 if(!this.step) return 0.01
                 try{
-                    let pow = (new Big(this.step.toString())).div(Math.pow(10,this.denomination))
-                    return pow.toNumber()
+                    return this.bnToNum(this.step)
                 }catch (e){
                     console.error(e)
                     return 0.01
@@ -95,9 +81,17 @@
                 let valEdit = (parseFloat(val).toFixed(this.denomination)).split('.').join('')
                 let valBn = new BN(valEdit)
                 this.$emit('change', valBn);
+            },
+            value(valBn){
+                // this.val = this.bnToNum(valBn)
+                console.log("Parent Change",valBn.toString())
             }
         },
         methods: {
+            bnToNum(bnVal){
+                let pow = (new Big(bnVal.toString())).div(Math.pow(10,this.denomination))
+                return pow.toNumber()
+            },
             maxout(){
                 if(this.maxNum){
                     this.val = this.maxNum
@@ -108,8 +102,10 @@
             },
             onChange(){
                 // If number is above max amount, correct it
-                if(this.val > this.maxNum){
-                    this.val = this.maxNum
+                if(this.maxNum){
+                    if(this.val > this.maxNum){
+                        this.val = this.maxNum
+                    }
                 }
             }
         }
