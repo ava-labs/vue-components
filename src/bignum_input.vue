@@ -8,12 +8,12 @@
     export default {
         data(){
             return {
-                val: 0.00,
+                val: null,
             }
         },
         computed: {
             maxNum(){
-                if(!this.max) return null
+                if(this.max===null) return null
                 try{
                     return this.bnToNum(this.max)
                 }catch (e){
@@ -44,6 +44,7 @@
                 default: 0
             },
             max: {
+                default: null,
                 type: [BN, Object],
             },
             min: {
@@ -103,7 +104,7 @@
                 return new BN(satoshis.toString())
             },
             maxout(){
-                if(this.maxNum){
+                if(this.maxNum != null){
                     this.val = this.maxNum
                 }
             },
@@ -112,7 +113,7 @@
             },
             onChange(){
                 // If number is above max amount, correct it
-                if(this.maxNum){
+                if(this.maxNum != null){
                     if(this.val > this.maxNum){
                         this.val = this.maxNum
                     }

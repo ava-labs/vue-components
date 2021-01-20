@@ -9,7 +9,7 @@
         <hr>
 
         <bignum_input :value="bigVal"
-                      :denomination="1"
+                      :denomination="18"
                       @change="bigInChange"
                       placeholder="Amount"
                       ref="big_in"
