@@ -1,43 +1,41 @@
 <template>
-    <CurrencyInput :allow-negative="false"
-                    v-model="val"
-                    locale="default"
-                    :currency="null"
-                    :value-as-integer="false"
-                    :precision="denomination"
-                    :auto-decimal-mode="true"
-                    :value-range="range"
-                   ref="curIn"
-                   @keydown.up.native="keyUp"
-                   @keydown.down.native="keyDown"
-    ></CurrencyInput>
+    <input type="number" :placeholder="placeholder" v-model="val" :min="min" :max="maxNum" :step="stepNum" @change="onChange">
 </template>
 <script>
     import Big from 'big.js';
     import * as BN from 'bn.js';
-    import {CurrencyInput} from 'vue-currency-input';
 
     export default {
-        components:{
-            CurrencyInput
-        },
         data(){
             return {
-                val: 0,
+                val: null,
             }
         },
         computed: {
-            range(){
-                let maxStr = Number.MAX_SAFE_INTEGER.toString();
-                if(this.max){
-                    let bnStr = this.max.toString();
-                    let big = Big(bnStr).div(Math.pow(10,this.denomination));
-                    maxStr = big.toString();
+            maxNum(){
+                if(this.max===null) return null
+                try{
+                    return this.bnToNum(this.max)
+                }catch (e){
+                    console.error(e)
+                    return null
                 }
-                return{
-                    min: this.min.toString(),
-                    max: maxStr
+            },
+            stepNum(){
+                if(!this.step) {
+                    if(this.denomination >= 2){
+                        return 0.01
+                    }else{
+                        return Math.pow(10, -this.denomination)
+                    }
                 }
+                try{
+                    return this.bnToNum(this.step)
+                }catch (e){
+                    console.error(e)
+                    return 0.01
+                }
+
             }
         },
         props: {
@@ -46,6 +44,7 @@
                 default: 0
             },
             max: {
+                default: null,
                 type: [BN, Object],
             },
             min: {
@@ -65,33 +64,60 @@
         },
         watch: {
             val(val){
-                let mult = Math.pow(10,this.denomination);
-                let valBig = Big(val).times(mult);
-                let strVal = valBig.toString();
-                let bnVal = new BN(strVal);
-                this.$emit('change', bnVal);
+
+                //
+                try{
+                    let splitVal = val.toString().split('.')
+                    let wholeVal = splitVal[0]
+                    let denomVal = splitVal[1]
+                    if(denomVal){
+                        if(denomVal.length > this.denomination){
+                            let newDenom = denomVal.substring(0,this.denomination)
+                            this.val = `${wholeVal}.${newDenom}`
+                            return
+                        }
+                    }
+                }catch (e){
+                    console.log(e)
+                }
+
+                if(!val){
+                    this.$emit('change', new BN(0));
+                    return
+                }
+
+                let valBn = this.stringToBN(val)
+                this.$emit('change', valBn);
+            },
+            value(valBn){
+                this.val = this.bnToNum(valBn)
             }
         },
         methods: {
-            keyUp(ev){
-                ev.preventDefault();
-                let dif = Big(1).div(Math.pow(10,this.denomination))
-                let newVal = Big(this.val).add(dif);
-                this.$refs.curIn.setValue(newVal.toString());
+            bnToNum(bnVal){
+                let pow = (new Big(bnVal.toString())).div(Math.pow(10,this.denomination))
+                return pow.toNumber()
             },
-            keyDown(ev){
-                ev.preventDefault();
-                let dif = Big(1).div(Math.pow(10,this.denomination))
-                let newVal = Big(this.val).sub(dif);
-                this.$refs.curIn.setValue(newVal.toString());
+            stringToBN(strVal){
+                let tens = Big(10).pow(this.denomination)
+                let satoshis = Big(strVal).times(tens)
+                return new BN(satoshis.toString())
             },
             maxout(){
-                if(this.max){
-                    this.$refs.curIn.setValue(this.max.toString());
+                if(this.maxNum != null){
+                    this.val = this.maxNum
                 }
             },
             clear(){
-                this.$refs.curIn.setValue('0');
+                this.val = 0
+            },
+            onChange(){
+                // If number is above max amount, correct it
+                if(this.maxNum != null){
+                    if(this.val > this.maxNum){
+                        this.val = this.maxNum
+                    }
+                }
             }
         }
     }
@@ -99,5 +125,17 @@
 <style scoped>
     input{
         text-align: right;
+        outline: none;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
     }
 </style>

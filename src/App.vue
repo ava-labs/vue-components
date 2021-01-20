@@ -9,16 +9,14 @@
         <hr>
 
         <bignum_input :value="bigVal"
-                      :denomination="9"
-                      :max="big_max"
-                      :min="0"
+                      :denomination="18"
                       @change="bigInChange"
-                      :step="stepSize"
-                      placeholder="0.0000000"
+                      placeholder="Amount"
                       ref="big_in"
         ></bignum_input>
         <p v-if="big_in_out">Out: {{big_in_out.toString()}}</p>
         <button @click="clearBigIn">Clear</button>
+        <button @click="maxOutBig">MAX</button>
         <div style="display: flex">
             <p>Denomination 9</p>
             <p>MAX: {{big_max.toString()}}</p>
@@ -56,13 +54,10 @@
         computed: {
             big_max(){
                 // return null;
-                return new BN('1000000000000000');
+                return new BN('36000000000000000');
             },
             stepSize(){
-                // let expo = 9-3;
-                //     expo = new BN(expo)
-                // let tens = new BN('10').pow(expo);
-                return new BN(1);
+                return new BN(1000000);
             }
         },
         methods: {
@@ -71,6 +66,9 @@
             },
             clearBigIn(){
                 this.$refs.big_in.clear();
+            },
+            maxOutBig(){
+                this.$refs.big_in.maxout();
             }
         },
         created(){
