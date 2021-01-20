@@ -1,5 +1,5 @@
 <template>
-    <input type="number" :placeholder="placeholder" v-model="val" :min="min" :max="maxNum" :step="stepNum" @change="onChange">
+    <input type="number" inputmode="decimal" :placeholder="placeholder" v-model="val" :min="min" :max="maxNum" :step="stepNum" @change="onChange">
 </template>
 <script>
     import Big from 'big.js';
