@@ -9,7 +9,8 @@
         <hr>
 
         <bignum_input :value="bigVal"
-                      :denomination="18"
+                      :denomination="9"
+                      :max="bnMax"
                       @change="bigInChange"
                       placeholder="Amount"
                       ref="big_in"
@@ -19,7 +20,7 @@
         <button @click="maxOutBig">MAX</button>
         <div style="display: flex">
             <p>Denomination 9</p>
-            <p>MAX: {{big_max.toString()}}</p>
+            <p>MAX: {{bnMax.toString()}}</p>
             <p>Step: {{stepSize}}</p>
         </div>
 
@@ -52,9 +53,9 @@
             CopyText
         },
         computed: {
-            big_max(){
+            bnMax(){
                 // return null;
-                return new BN('36000000000000000');
+                return new BN('360000000000000000');
             },
             stepSize(){
                 return new BN(1000000);

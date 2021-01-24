@@ -15,7 +15,9 @@
             maxNum(){
                 if(this.max===null) return null
                 try{
-                    return this.bnToNum(this.max)
+                    let num = this.bnToNum(this.max)
+                    if(num<0)return 0
+                    return num
                 }catch (e){
                     console.error(e)
                     return null
@@ -79,6 +81,11 @@
                     }
                 }catch (e){
                     console.log(e)
+                }
+
+                if(parseFloat(val) < this.min){
+                    this.val = this.min.toString()
+                    return
                 }
 
                 if(!val){
