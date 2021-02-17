@@ -1,6 +1,6 @@
 {
   "name": "@avalabs/vue_components",
-  "version": "0.7.4",
+  "version": "0.8.0",
   "main": "dist/index.umd.js",
   "scripts": {
     "serve": "vue-cli-service serve",
