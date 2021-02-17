@@ -1,10 +1,10 @@
 <template>
     <div class="qr_input">
-        <QRReader class="readerIn" @change="change"><button>
+        <QRReader class="readerIn" @change="change" :disabled="disabled"><button>
             <fa :icon="fa_camera"></fa>
         </button></QRReader>
         <input type="text" class="pk_in" :placeholder="placeholder"
-               v-model="pk" @input="oninput">
+               v-model="pk" @input="oninput" :disabled="disabled">
     </div>
 </template>
 <script>
@@ -25,7 +25,11 @@
         },
         props: {
             placeholder: String,
-            value: String
+            value: String,
+            disabled: {
+                type: Boolean,
+                default: false
+            }
         },
         watch: {
             value(val){

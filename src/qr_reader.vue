@@ -1,6 +1,6 @@
 <template>
     <div class="qr_reader">
-        <div class="buts">
+        <div class="buts" :disabled="disabled">
             <div class="clickStart" @click="start"></div>
             <slot class="qr_slot"></slot>
         </div>
@@ -33,8 +33,15 @@
                 fa_times: faTimes,
             }
         },
+        props:{
+            disabled: {
+                type: Boolean,
+                default: false
+            }
+        },
         methods: {
             start(){
+                if(this.disabled) return;
                 let camera = this.camera;
                 if(!camera){
                     alert("No Cameras Found");
@@ -131,6 +138,11 @@
     .buts:hover{
         opacity: 1;
     }
+    .buts[disabled]{
+        opacity: 0.8;
+        cursor: default;
+    }
+
     .clickStart{
         cursor: pointer;
         position: absolute;
