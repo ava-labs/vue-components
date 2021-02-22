@@ -108,7 +108,7 @@
             stringToBN(strVal){
                 let tens = Big(10).pow(this.denomination)
                 let satoshis = Big(strVal).times(tens)
-                return new BN(satoshis.toString())
+                return new BN(satoshis.toFixed())
             },
             maxout(){
                 if(this.maxNum != null){
