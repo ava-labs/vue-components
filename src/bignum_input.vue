@@ -66,8 +66,11 @@
         },
         watch: {
             val(val){
+                if(!val){
+                    this.$emit('change', new BN(0));
+                    return
+                }
 
-                //
                 try{
                     let splitVal = val.toString().split('.')
                     let wholeVal = splitVal[0]
@@ -85,11 +88,6 @@
 
                 if(parseFloat(val) < this.min){
                     this.val = this.min.toString()
-                    return
-                }
-
-                if(!val){
-                    this.$emit('change', new BN(0));
                     return
                 }
 
@@ -116,7 +114,7 @@
                 }
             },
             clear(){
-                this.val = 0
+                this.val = undefined
             },
             onChange(){
                 // If number is above max amount, correct it
