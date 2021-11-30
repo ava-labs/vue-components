@@ -27,10 +27,10 @@
                     }
                 }
                 try{
-                    return this.bnToNum(this.step)
+                    return this.bnToString(this.step)
                 }catch (e){
                     console.error(e)
-                    return 0.01
+                    return '0.01'
                 }
 
             }
@@ -90,17 +90,12 @@
                 this.$emit('change', valBn);
             },
             value(valBn){
-                this.val = this.bnToNum(valBn)
+                this.val = this.bnToString(valBn)
             }
         },
         methods: {
             bnToString(val){
                 return Utils.bnToBig(val, this.denomination).toString()
-            },
-            bnToNum(bnVal){
-                // bn to big
-                const bigVal = Utils.bnToBig(bnVal,this.denomination)
-                return bigVal.toNumber()
             },
             stringToBN(strVal){
                 return Utils.stringToBN(strVal,this.denomination)
@@ -115,7 +110,7 @@
             },
             onChange(){
                 // If number is above max amount, correct it
-                const valBig = Big(this.val)
+                const valBig = Big(this.val || '0')
                 const valBN = Utils.bigToBN(valBig,this.denomination)
                 if(this.maxNumBN != null){
                     if(valBN.gt(this.maxNumBN)){
