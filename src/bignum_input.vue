@@ -2,8 +2,7 @@
     <input type="number" inputmode="decimal" :placeholder="placeholder" v-model="val" :min="min" :max="maxNum" :step="stepNum" @change="onChange">
 </template>
 <script>
-    import Big from 'big.js';
-    import * as BN from 'bn.js';
+    import {Utils, BN} from '@avalabs/avalanche-wallet-sdk'
 
     export default {
         data(){
@@ -100,13 +99,12 @@
         },
         methods: {
             bnToNum(bnVal){
-                let pow = (new Big(bnVal.toString())).div(Math.pow(10,this.denomination))
-                return pow.toNumber()
+                // bn to big
+                const bigVal = Utils.bnToBig(bnVal,this.denomination)
+                return bigVal.toNumber()
             },
             stringToBN(strVal){
-                let tens = Big(10).pow(this.denomination)
-                let satoshis = Big(strVal).times(tens)
-                return new BN(satoshis.toFixed())
+                return Utils.stringToBN(strVal,this.denomination)
             },
             maxout(){
                 if(this.maxNum != null){

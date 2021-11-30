@@ -9,7 +9,7 @@
         <hr>
 
         <bignum_input :value="bigVal"
-                      :denomination="18"
+                      :denomination="2"
                       :max="bnMax"
                       @change="bigInChange"
                       placeholder="Amount"
@@ -19,7 +19,7 @@
         <button @click="clearBigIn">Clear</button>
         <button @click="maxOutBig">MAX</button>
         <div style="display: flex">
-            <p>Denomination 9</p>
+            <p>Denomination 2</p>
             <p>MAX: {{bnMax.toString()}}</p>
             <p>Step: {{stepSize}}</p>
         </div>
@@ -37,7 +37,7 @@
     import bignum_input from "./bignum_input";
     import CopyText from "./CopyText";
 
-    import * as BN from 'bn.js';
+    import {BN} from '@avalabs/avalanche-wallet-sdk'
 
     export default {
         data(){
@@ -54,8 +54,7 @@
         },
         computed: {
             bnMax(){
-                // return null;
-                return new BN('3600000000000000000000000000000');
+                return new BN('3600000000000000000');
             },
             stepSize(){
                 return new BN(1000000);
