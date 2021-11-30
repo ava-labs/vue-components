@@ -1,26 +1,22 @@
 <template>
-    <input type="number" inputmode="decimal" :placeholder="placeholder" v-model="val" :min="min" :max="maxNum" :step="stepNum" @change="onChange">
+    <input type="number" inputmode="decimal" :placeholder="placeholder" v-model="val" :min="min" :max="maxNumString" :step="stepNum" @change="onChange">
 </template>
 <script>
-    import {Utils, BN} from '@avalabs/avalanche-wallet-sdk'
+    import {Utils, BN, Big} from '@avalabs/avalanche-wallet-sdk'
 
     export default {
         data(){
             return {
+                // Val is a string
                 val: null,
             }
         },
         computed: {
-            maxNum(){
-                if(this.max===null) return null
-                try{
-                    let num = this.bnToNum(this.max)
-                    if(num<0)return 0
-                    return num
-                }catch (e){
-                    console.error(e)
-                    return null
-                }
+            maxNumString(){
+              return this.bnToString(this.maxNumBN)
+            },
+            maxNumBN(){
+                return this.max
             },
             stepNum(){
                 if(!this.step) {
@@ -98,6 +94,9 @@
             }
         },
         methods: {
+            bnToString(val){
+                return Utils.bnToBig(val, this.denomination).toString()
+            },
             bnToNum(bnVal){
                 // bn to big
                 const bigVal = Utils.bnToBig(bnVal,this.denomination)
@@ -107,8 +106,8 @@
                 return Utils.stringToBN(strVal,this.denomination)
             },
             maxout(){
-                if(this.maxNum != null){
-                    this.val = this.maxNum
+                if(this.maxNumBN != null){
+                    this.val = this.bnToString(this.maxNumBN)
                 }
             },
             clear(){
@@ -116,9 +115,11 @@
             },
             onChange(){
                 // If number is above max amount, correct it
-                if(this.maxNum != null){
-                    if(this.val > this.maxNum){
-                        this.val = this.maxNum
+                const valBig = Big(this.val)
+                const valBN = Utils.bigToBN(valBig,this.denomination)
+                if(this.maxNumBN != null){
+                    if(valBN.gt(this.maxNumBN)){
+                        this.val = this.bnToString(this.maxNumBN)
                     }
                 }
             }

@@ -9,7 +9,7 @@
         <hr>
 
         <bignum_input :value="bigVal"
-                      :denomination="2"
+                      :denomination="9"
                       :max="bnMax"
                       @change="bigInChange"
                       placeholder="Amount"
@@ -54,7 +54,7 @@
         },
         computed: {
             bnMax(){
-                return new BN('3600000000000000000');
+                return new BN('19999998982656939');
             },
             stepSize(){
                 return new BN(1000000);
