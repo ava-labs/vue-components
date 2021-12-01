@@ -1,27 +1,22 @@
 <template>
-    <input type="number" inputmode="decimal" :placeholder="placeholder" v-model="val" :min="min" :max="maxNum" :step="stepNum" @change="onChange">
+    <input type="number" inputmode="decimal" :placeholder="placeholder" v-model="val" :min="min" :max="maxNumString" :step="stepNum" @change="onChange">
 </template>
 <script>
-    import Big from 'big.js';
-    import * as BN from 'bn.js';
+    import {Utils, BN, Big} from '@avalabs/avalanche-wallet-sdk'
 
     export default {
         data(){
             return {
+                // Val is a string
                 val: null,
             }
         },
         computed: {
-            maxNum(){
-                if(this.max===null) return null
-                try{
-                    let num = this.bnToNum(this.max)
-                    if(num<0)return 0
-                    return num
-                }catch (e){
-                    console.error(e)
-                    return null
-                }
+            maxNumString(){
+              return this.bnToString(this.maxNumBN)
+            },
+            maxNumBN(){
+                return this.max
             },
             stepNum(){
                 if(!this.step) {
@@ -32,10 +27,10 @@
                     }
                 }
                 try{
-                    return this.bnToNum(this.step)
+                    return this.bnToString(this.step)
                 }catch (e){
                     console.error(e)
-                    return 0.01
+                    return '0.01'
                 }
 
             }
@@ -95,22 +90,19 @@
                 this.$emit('change', valBn);
             },
             value(valBn){
-                this.val = this.bnToNum(valBn)
+                this.val = this.bnToString(valBn)
             }
         },
         methods: {
-            bnToNum(bnVal){
-                let pow = (new Big(bnVal.toString())).div(Math.pow(10,this.denomination))
-                return pow.toNumber()
+            bnToString(val){
+                return Utils.bnToBig(val, this.denomination).toString()
             },
             stringToBN(strVal){
-                let tens = Big(10).pow(this.denomination)
-                let satoshis = Big(strVal).times(tens)
-                return new BN(satoshis.toFixed())
+                return Utils.stringToBN(strVal,this.denomination)
             },
             maxout(){
-                if(this.maxNum != null){
-                    this.val = this.maxNum
+                if(this.maxNumBN != null){
+                    this.val = this.bnToString(this.maxNumBN)
                 }
             },
             clear(){
@@ -118,9 +110,11 @@
             },
             onChange(){
                 // If number is above max amount, correct it
-                if(this.maxNum != null){
-                    if(this.val > this.maxNum){
-                        this.val = this.maxNum
+                const valBig = Big(this.val || '0')
+                const valBN = Utils.bigToBN(valBig,this.denomination)
+                if(this.maxNumBN != null){
+                    if(valBN.gt(this.maxNumBN)){
+                        this.val = this.bnToString(this.maxNumBN)
                     }
                 }
             }
