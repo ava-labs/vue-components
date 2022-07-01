@@ -2,7 +2,7 @@
     <input type="number" inputmode="decimal" :placeholder="placeholder" v-model="val" :min="min" :max="maxNumString" :step="stepNum" @change="onChange">
 </template>
 <script>
-    import {Utils, BN, Big} from '@c4tplatform/avalanche-wallet-sdk'
+    import {Utils, BN, Big} from '@c4tplatform/camino-wallet-sdk'
 
     export default {
         data(){

@@ -37,7 +37,7 @@
     import bignum_input from "./bignum_input";
     import CopyText from "./CopyText";
 
-    import {BN} from '@c4tplatform/avalanche-wallet-sdk'
+    import {BN} from '@c4tplatform/camino-wallet-sdk'
 
     export default {
         data(){

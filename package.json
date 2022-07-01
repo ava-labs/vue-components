@@ -1,6 +1,6 @@
 {
   "name": "@c4tplatform/vue_components",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dist/index.umd.js",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -17,11 +17,11 @@
     "vue": "^2.6.11"
   },
   "peerDependencies": {
-    "@c4tplatform/avalanche-wallet-sdk": "0.0.2"
+    "@c4tplatform/camino-wallet-sdk": "0.0.1"
   },
   "devDependencies": {
-    "@c4tplatform/avalanche-wallet-sdk": "0.0.2",
-    "@c4tplatform/avalanche": "0.0.1",
+    "@c4tplatform/camino-wallet-sdk": "0.0.1",
+    "@c4tplatform/camino": "0.0.2",
     "@vue/cli-plugin-babel": "~4.2.0",
     "@vue/cli-plugin-eslint": "~4.2.0",
     "@vue/cli-service": "~4.2.0",
