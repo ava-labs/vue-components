@@ -17,7 +17,7 @@ import {
   bnToBig,
   BN,
   Big,
-} from "@c4tplatform/camino-wallet-sdk";
+} from "bn.js";
 
 export default {
   data() {

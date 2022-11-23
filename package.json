@@ -5,23 +5,20 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name index ./src/wrapper.js --mode production",
-    "lint": "vue-cli-service lint",
-    "prepare": "yarn build"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "@fortawesome/vue-fontawesome": "^0.1.9",
     "@zxing/library": "^0.15.2",
+    "bn.js": "5.2.1",
     "core-js": "^3.6.4",
     "vue": "^2.6.11"
   },
-  "peerDependencies": {
-    "@c4tplatform/camino-wallet-sdk": "0.0.2"
-  },
+  "peerDependencies": {},
   "devDependencies": {
-    "@c4tplatform/camino-wallet-sdk": "0.0.2",
-    "@c4tplatform/caminojs": "1.0.0",
+    "@types/bn.js": "5.1.0",
     "@vue/cli-plugin-babel": "~4.2.0",
     "@vue/cli-plugin-eslint": "~4.2.0",
     "@vue/cli-service": "~4.2.0",

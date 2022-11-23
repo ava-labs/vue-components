@@ -29,7 +29,7 @@ import qr_input from "./qr_input";
 import qr_reader from "./qr_reader";
 import bignum_input from "./bignum_input";
 import CopyText from "./CopyText";
-import { BN } from "@c4tplatform/camino-wallet-sdk";
+import { BN } from "bn.js";
 
 export default {
   data() {
